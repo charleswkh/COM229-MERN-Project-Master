@@ -27,3 +27,11 @@ Appointment Booking (POST/PUT)
   4. Appointment Booking
   5. 
 
+
+# External Link for Project 
+1. WireFrame
+https://www.figma.com/file/kZmIN78Ja5U7U1nwYEfCJ3/Figma-basics?type=design&node-id=1669%3A162202&mode=design&t=Fgp4ikVNGAkO7ePn-1
+2. GitHub project (this one)
+https://github.com/users/shahzaibvohra1/projects/3
+3. Github Repo
+https://github.com/shahzaibvohra1/COM229-MERN-Project-Master
