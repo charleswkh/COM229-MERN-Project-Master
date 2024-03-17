@@ -7,3 +7,9 @@ Users will be able to sign in to book an appointment.
   3. Reminder for appointment. 
 
 # Member of Project
+
+
+# Tables/Class:
+  1. Resource
+  2. Resource Availability
+  3. 
