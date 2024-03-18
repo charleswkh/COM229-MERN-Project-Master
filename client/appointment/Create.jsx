@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Typography, TextField, CardActions, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { create } from './api-appointment';
-
+import auth from '../lib/auth-helper.js'
 import DatePicker from "react-datepicker";
 import setHours from "date-fns/setHours";
 import "react-datepicker/dist/react-datepicker.css";
@@ -36,27 +36,70 @@ const useStyles = makeStyles(theme => ({
 //  return { error: null }; // Simulated API call
 // };
 export default function Create() {
-    
-    const classes = useStyles();
+    const jwt = auth.isAuthenticated();
+    //console.log(auth);
+    //console.log(jwt);
+    const classes = useStyles()
+    const { userId } = useParams();
     const [values, setValues] = useState({
-        apply_user: 'Gavin',
+        apply_user: jwt.user.name,
         appointment_date: '',
         is_active: true,
     });
     const [open, setOpen] = useState(false);
     const handleChange = name => event => {
+        console.log(name);
+        console.log(event.target);
         setValues({ ...values, [name]: event.target.value });
     };
+
+    const handleChangeDate = (name, value) =>{
+        //console.log(name);
+        //console.log(value);
+        setValues({ ...values, [name]: value });
+    }
+
     const handleClose = () => {
         setOpen(false);
     };
+/*
+    useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        read(
+            {
+                userId: userId
+            }, 
+            { t: jwt.token }, 
+            signal
+        ).then((data) => {
+            if (data && data.error) {
+                setValues({ ...values, error: data.error })
+            } else {
+                setValues({ ...values, apply_user: data.name })
+            }
+            console.log(data);
+            console.log(values);
+        })
+        return function cleanup() {
+            abortController.abort()
+        }
+    }, [userId]);
+*/
     const clickSubmit = () => {
         const appointment = {
             apply_user: values.apply_user || undefined,
             appointment_date: values.appointment_date || undefined,
             is_active: true,
         };
-        create(appointment).then((data) => {
+        console.log(appointment);
+        console.log(values.appointment_date );
+        create(
+            appointment, 
+            {
+                t: jwt.token
+            }
+        ).then((data) => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
@@ -71,6 +114,7 @@ export default function Create() {
 
     const [startDate, setStartDate] = useState(
         //setHours(new Date(), 16)
+        //console.log("setStartDate")
       );
 
     return (
@@ -91,8 +135,10 @@ export default function Create() {
                     />
                    <DatePicker showTimeSelect
                         id = "appointment_date"
+                        
                         selected={startDate} 
-                        onChange={(date) => setStartDate(date)}
+                        onChange={ (date) => {setStartDate(date), handleChangeDate("appointment_date", date)}}
+                        
                         excludeTimes={[
                                 new Date(new Date().setHours(new Date().getHours(), new Date().getMinutes()))
                             ]}
@@ -114,7 +160,13 @@ export default function Create() {
                         New appointment successfully created.
                     </DialogContentText>
                 </DialogContent>
-                
+                <DialogActions>
+                    <Link to="/">
+                        <Button color="primary" autoFocus variant="contained" onClick={handleClose}>
+                            Appointment List
+                        </Button>
+                    </Link>
+                </DialogActions>
             </Dialog>
         </div>
     );

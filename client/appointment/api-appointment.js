@@ -1,10 +1,13 @@
-const create = async (appointment) => {
+const create = async (appointment, credentials) => {
     try {
+        console.log(credentials.t)
+        console.log(appointment);
         let response = await fetch('/api/appointment/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + credentials.t
             },
             body: JSON.stringify(appointment)
         })
@@ -13,11 +16,16 @@ const create = async (appointment) => {
         console.log(err)
     }
 }
-const list = async (signal) => {
+const list = async (signal, credentials) => {
     try {
         let response = await fetch('/api/appointment/', {
             method: 'GET',
             signal: signal,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + credentials.t
+            }
         })
         return await response.json()
     } catch (err) {

@@ -32,7 +32,10 @@ function MainRouter() {
                 <Route path="/user/:userId" element={<Profile />} />
 
 
-                <Route path="/addappointment" element={<AddAppointment />} />
+                <Route 
+                    path="/addappointment" 
+                    element={<PrivateRoute><AddAppointment /></PrivateRoute>} 
+                />
             </Routes>
         </div>
     );

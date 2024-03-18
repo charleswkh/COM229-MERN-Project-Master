@@ -2,10 +2,7 @@ import mongoose from 'mongoose'
 import crypto from 'crypto'
 //const mongoose = require('mongoose');
 const AppointmentSchema = new mongoose.Schema({
-    appointment_no: {
-        type: String,
-        trim: true
-    },
+    
     apply_user: {
         type: String,
         trim: true,
