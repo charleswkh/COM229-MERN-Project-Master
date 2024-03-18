@@ -52,6 +52,15 @@ export default function Menu() {
             }}>Sign out</Button>
           </span>)
         }
+
+        {
+          auth.isAuthenticated() && (
+            <Link to="/addappointment">
+              <Button style={isActive(location, "/addappointment")}>Add Appointment</Button>
+            </Link>
+          )
+       
+        }
       </Toolbar>
     </AppBar>
   );

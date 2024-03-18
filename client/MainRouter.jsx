@@ -7,6 +7,7 @@ import Signin from './lib/Signin.jsx'
 import Profile from './user/Profile.jsx'
 import PrivateRoute from './lib/PrivateRoute.jsx'
 import EditProfile from './user/EditProfile.jsx'
+import AddAppointment from './appointment/Create.jsx'
 
 import Menu from './core/Menu'
 function MainRouter() {
@@ -29,6 +30,12 @@ function MainRouter() {
                     }
                 />
                 <Route path="/user/:userId" element={<Profile />} />
+
+
+                <Route 
+                    path="/addappointment" 
+                    element={<PrivateRoute><AddAppointment /></PrivateRoute>} 
+                />
             </Routes>
         </div>
     );
