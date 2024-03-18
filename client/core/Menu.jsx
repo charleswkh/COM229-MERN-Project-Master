@@ -52,6 +52,10 @@ export default function Menu() {
             }}>Sign out</Button>
           </span>)
         }
+
+        <Link to="/addappointment">
+          <Button style={isActive(location, "/addappointment")}>Add Appointment</Button>
+        </Link>
       </Toolbar>
     </AppBar>
   );
