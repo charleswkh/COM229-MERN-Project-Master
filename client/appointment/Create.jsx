@@ -42,6 +42,7 @@ export default function Create() {
     const classes = useStyles()
     const { userId } = useParams();
     const [values, setValues] = useState({
+        apply_user_id: jwt.user._id,
         apply_user: jwt.user.name,
         appointment_date: '',
         is_active: true,
@@ -88,12 +89,13 @@ export default function Create() {
 */
     const clickSubmit = () => {
         const appointment = {
+            apply_user_id: values.apply_user_id || undefined,
             apply_user: values.apply_user || undefined,
             appointment_date: values.appointment_date || undefined,
             is_active: true,
         };
-        console.log(appointment);
-        console.log(values.appointment_date );
+        //console.log(appointment);
+        //console.log(values.appointment_date );
         create(
             appointment, 
             {

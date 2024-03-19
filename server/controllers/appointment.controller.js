@@ -22,7 +22,11 @@ const list = async (req, res) => {
         if (req.query.apply_user){
             queryAry["apply_user"] = req.query.apply_user;
         }
-        let appointments = await Appointment.find(queryAry).select('apply_user appointment_date is_active');
+        if (req.query.apply_user_id){
+            queryAry["apply_user_id"] = req.query.apply_user_id;
+        }
+
+        let appointments = await Appointment.find(queryAry).select('apply_user_id apply_user appointment_date is_active');
         res.json(appointments);
     } catch (err) {
         return res.status(400).json({
