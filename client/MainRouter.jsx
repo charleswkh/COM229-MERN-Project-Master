@@ -9,13 +9,12 @@ import PrivateRoute from './lib/PrivateRoute.jsx'
 import EditProfile from './user/EditProfile.jsx'
 import AddAppointment from './appointment/Create.jsx'
 
-import Menu from './core/Menu'
+import Header from './core/Header.jsx'
+
 function MainRouter() {
     return (
         <div>
-            <Menu />
-
-
+            <Header />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/users" element={<Users />} />

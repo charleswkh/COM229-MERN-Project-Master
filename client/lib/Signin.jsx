@@ -1,47 +1,22 @@
 import React, { useState } from 'react'
-import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import Icon from '@material-ui/core/Icon'
 import { makeStyles } from '@material-ui/core/styles'
 import auth from './auth-helper.js'
 import { Navigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom';
 import { signin } from './api-auth.js'
 
-const useStyles = makeStyles(theme => ({
-  card: {
-    maxWidth: 600,
-    margin: 'auto',
-    textAlign: 'center',
-    marginTop: theme.spacing(5),
-    paddingBottom: theme.spacing(2)
-  },
-  error: {
-    verticalAlign: 'middle'
-  },
-  title: {
-    marginTop: theme.spacing(2),
-    color: theme.palette.openTitle
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 300
-  },
-  submit: {
-    margin: 'auto',
-    marginBottom: theme.spacing(2)
-  }
-}))
+import { ContainerLoginRegister } from '../component/customstyle/CustomStyledDiv.jsx'
+import { COLOR_TEXT } from './color-help.js'
+import { TextFieldBlue } from '../component/customstyle/CustomStyledTextField.jsx'
+import ButtonMainTheme from '../component/button/ButtonMainTheme.jsx'
+import ToastMessageGeneral from '../component/modal/ToastMessageGeneral.jsx';
 
 export default function Signin(props) {
   const location = useLocation();
-  console.log(location.state)
-  const classes = useStyles()
+
+  const [errToast, setErrToast] = useState("")
+  const [errLoginID, setErrLoginID] = useState("")
+  const [errPassword, setErrPassword] = useState("")
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -50,21 +25,39 @@ export default function Signin(props) {
   })
 
   const clickSubmit = () => {
-    const user = {
-      email: values.email || undefined,
-      password: values.password || undefined
+    let isError = false
+    if(values.email){
+      setErrLoginID("")
+    } else {
+      isError = true
+      setErrLoginID("Please input Email!")
     }
-    console.log(user)
-    signin(user).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error })
-      } else {
-        console.log(data)
-        auth.authenticate(data, () => {
-          setValues({ ...values, error: '', redirectToReferrer: true })
-        })
+
+    if(values.password){
+      setErrLoginID("")
+    } else {
+      isError = true
+      setErrPassword("Please input Password!")
+    }
+
+    if(!isError){
+      const user = {
+        email: values.email || undefined,
+        password: values.password || undefined
       }
-    })
+      console.log(user)
+      signin(user).then((data) => {
+        if (data.error) {
+          setErrToast(data.error)
+          // setValues({ ...values, error: data.error })
+        } else {
+          console.log(data)
+          auth.authenticate(data, () => {
+            setValues({ ...values, error: '', redirectToReferrer: true })
+          })
+        }
+      })
+    }
   }
 
   const handleChange = name => event => {
@@ -83,24 +76,25 @@ export default function Signin(props) {
   }
 
   return (
-    <Card className={classes.card}>
-      <CardContent>
-        <Typography variant="h6" className={classes.title}>
-          Sign In
-        </Typography>
-        <TextField id="email" type="email" label="Email" className={classes.textField} value={values.email} onChange={handleChange('email')} margin="normal" /><br />
-        <TextField id="password" type="password" label="Password" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal" />
-        <br /> {
-          values.error && (<Typography component="p" color="error">
-            <Icon color="error" className={classes.error}>error</Icon>
-            {values.error}
-          </Typography>)
-        }
-      </CardContent>
-      <CardActions>
-        <Button color="primary" variant="contained" onClick={clickSubmit} className={classes.submit}>Submit</Button>
-      </CardActions>
-    </Card>
+    <div style={{flex: 1, display: 'flex', justifyContent: 'center'}}>
+      <ToastMessageGeneral visible={errToast != ''} type={'error'} message={errToast} onRequestClosed={() => setErrToast("")} />
+      <ContainerLoginRegister style={{gap: 20, paddingBottom: 50}}>
+        <img src="/logo.webp" height={300} width={300} style={{borderRadius: 20}} alt={'COMP229_Group4'} />
+        
+        <span style={{fontSize: 24, color: COLOR_TEXT, fontWeight: 'bold'}}>Login</span>
+        
+        <TextFieldBlue variant="outlined" fullWidth margin='dense' style={{width: 300}} InputLabelProps={{style:{fontSize: 14}}} 
+          label={"Email"} error={errLoginID != ''} helperText={errLoginID}
+          onChange={handleChange('email')}/>
+        
+        <TextFieldBlue variant="outlined" fullWidth margin='dense' style={{width: 300}} InputLabelProps={{style:{fontSize: 14}}} 
+          label={"Password"} type={'password'} error={errPassword != ''} helperText={errPassword}
+          onChange={handleChange('password')}/>
+
+        <ButtonMainTheme style={{width: 200}} textStyle={{fontSize: 24, fontWeight: 'bold'}} label={'Submit'} onClick={clickSubmit} />
+      </ContainerLoginRegister>
+    </div>
+
   )
 }
 
