@@ -50,11 +50,13 @@ const appointmentByID = async (req, res, next, id) => {
     }
 }
 const read = (req, res) => {
-    return res.json(req.profile)
+    //console.log("read");
+    return res.json(req.profile);
 }
 
 const remove = async (req, res) => {
     try {
+        console.log(remove);
         let appointment = req.profile
         let deletedAppointment = await appointment.deleteOne()
        
@@ -65,4 +67,4 @@ const remove = async (req, res) => {
         })
     }
 }
-export default { create, appointmentByID, read, list, remove, }
+export default { create, appointmentByID, read, list, remove }
