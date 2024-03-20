@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Typography, TextField, CardActions, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+
 import { create } from './api-user';
+import { ContainerLoginRegister } from '../component/customstyle/CustomStyledDiv';
+import { TextFieldBlue } from '../component/customstyle/CustomStyledTextField';
+import { COLOR_TEXT } from '../lib/color-help';
+import ButtonMainTheme from '../component/button/ButtonMainTheme';
+import ModalGeneralMessage from '../component/modal/ModalGeneralMessage';
+import ToastMessageGeneral from '../component/modal/ToastMessageGeneral.jsx';
+
 const useStyles = makeStyles(theme => ({
     card: {
         maxWidth: 400,
@@ -27,98 +36,138 @@ const useStyles = makeStyles(theme => ({
         fontSize: 18,
     },
 }));
-// const create = async (user) => {
-//  return { error: null }; // Simulated API call
-// };
+
 export default function Signup() {
     const classes = useStyles();
+    const navigate = useNavigate();
+    const [visibleSuccess, setVisibleSuccess] = useState(false)
+    const [errName, setErrName] = useState('')
+    const [errPassword, setErrPassword] = useState('')
+    const [errConfirmPassword, setErrConfirmPassword] = useState('')
+    const [errEmail, setErrEmail] = useState('')
+    const [errPhone, setErrPhone] = useState('')
+    const [errToast, setErrToast] = useState("")
+
     const [values, setValues] = useState({
         name: '',
         password: '',
+        confirmpassword: '',
         email: '',
+        phone: '',
     });
-    const [open, setOpen] = useState(false);
     const handleChange = name => event => {
-        setValues({ ...values, [name]: event.target.value });
+        console.log("<------- name: ", name, ", value:", event.target.value, ", result: ", /^.*([0-9()+-])$/.test(event.target.value))
+        if(name == 'phone'){
+            if(/^.*([0-9()+-])$/.test(event.target.value)){
+                setValues({ ...values, [name]: event.target.value });
+            }
+        } else {
+            setValues({ ...values, [name]: event.target.value });
+        }
     };
     const handleClose = () => {
-        setOpen(false);
+        setVisibleSuccess(false);
+        navigate('/signin')
     };
     const clickSubmit = () => {
-        const user = {
-            name: values.name || undefined,
-            email: values.email || undefined,
-            password: values.password || undefined,
-        };
-        create(user).then((data) => {
-            if (data.error) {
-                setValues({ ...values, error: data.error });
-            } else {
-                setOpen(true);
-            }
-        });
+        let isError = false
+
+        if(values.name == ""){
+            isError = true
+            setErrName("Please input your name!")
+        } else {
+            setErrName("")
+        }
+
+        if(values.email == ""){
+            isError = true
+            setErrEmail("Please input your email!")
+        } else {
+            setErrEmail("")
+        }
+
+        if(values.phone == ""){
+            isError = true
+            setErrPhone("Please input your phone number!")
+        } else {
+            setErrPhone("")
+        }
+
+        if(values.password == ""){
+            isError = true
+            setErrPassword("Please input your password!")
+        } else {
+            setErrPassword("")
+        }
+
+        if(values.confirmpassword == ""){
+            isError = true
+            setErrConfirmPassword("Please input your confirm password!")
+        } else if(values.confirmpassword != values.password){
+            isError = true
+            setErrConfirmPassword("Password and confirm password does not match.")
+        } else {
+            setErrConfirmPassword("")
+        }
+
+        if(!isError){
+            const user = {
+                name: values.name || undefined,
+                email: values.email || undefined,
+                password: values.password || undefined,
+                phone: values.phone || undefined
+            };
+            create(user).then((data) => {
+                if (data.error) {
+                    setErrToast(data.error)
+                    // setValues({ ...values, error: data.error });
+                } else {
+                    setVisibleSuccess(true);
+                }
+            });
+        }
     };
     Signup.propTypes = {
         open: PropTypes.bool.isRequired,
         handleClose: PropTypes.func.isRequired,
     };
-    return (
-        <div>
-            <Card className={classes.card}>
-                <CardContent>
-                    <Typography variant="h6" className={classes.title}>
-                        Sign Up
-                    </Typography>
 
-                    <TextField
-                        id="name"
-                        label="Name"
-                        className={classes.textField}
-                        value={values.name}
-                        onChange={handleChange('name')}
-                        margin="normal"
-                    />
-                    <TextField
-                        id="email"
-                        label="Email"
-                        className={classes.textField}
-                        value={values.email}
-                        onChange={handleChange('email')}
-                        margin="normal"
-                    />
-                    <TextField
-                        id="password"
-                        label="Password"
-                        className={classes.textField}
-                        value={values.password}
-                        onChange={handleChange('password')}
-                        type="password"
-                        margin="normal"
-                    />
-                </CardContent>
-                <CardActions>
-                    <Button color="primary" variant="contained" onClick={clickSubmit}
-                        className={classes.submit}>
-                        Submit
-                    </Button>
-                </CardActions>
-            </Card>
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>New Account</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        New account successfully created.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Link to="/Signin">
-                        <Button color="primary" autoFocus variant="contained" onClick={handleClose}>
-                            Sign In
-                        </Button>
-                    </Link>
-                </DialogActions>
-            </Dialog>
+
+    return (
+        <div style={{flex: 1, display: 'flex', justifyContent: 'center'}}>
+            <ToastMessageGeneral visible={errToast != ''} type={'error'} message={errToast} onRequestClosed={() => setErrToast("")} />
+            <ModalGeneralMessage message={"New account successfully created."} visible={visibleSuccess} buttonText={"Login"} onRequestClosed={handleClose}/>
+            <ContainerLoginRegister style={{gap: 20, paddingBottom: 50}}>
+
+                <img src="/logo.webp" height={300} width={300} style={{borderRadius: 20}} alt={'COMP229_Group4'} />
+                
+                <span style={{fontSize: 24, color: COLOR_TEXT, fontWeight: 'bold'}}>Register</span>
+
+                <TextFieldBlue variant="outlined" fullWidth margin='dense' style={{width: 300}} InputLabelProps={{style:{fontSize: 14}}} 
+                    label={"Name"} error={errName != ''} helperText={errName}
+                    onChange={handleChange('name')}/>
+
+                <TextFieldBlue variant="outlined" fullWidth margin='dense' style={{width: 300}} InputLabelProps={{style:{fontSize: 14}}} 
+                    label={"Email"} error={errEmail != ''} helperText={errEmail}
+                    onChange={handleChange('email')}/>
+
+                <TextFieldBlue variant="outlined" fullWidth margin='dense' style={{width: 300}} InputLabelProps={{style:{fontSize: 14}}} 
+                    label={"Phone Number"} value={values.phone} error={errPhone != ''} helperText={errPhone}
+                    onChange={handleChange('phone')}/>
+
+                <TextFieldBlue variant="outlined" fullWidth margin='dense' style={{width: 300}} InputLabelProps={{style:{fontSize: 14}}} 
+                    label={"Password"} type={'password'} error={errPassword != ''} helperText={errPassword}
+                    onChange={handleChange('password')}/>
+
+                <TextFieldBlue variant="outlined" fullWidth margin='dense' style={{width: 300}} InputLabelProps={{style:{fontSize: 14}}} 
+                    label={"Confirm Password"} type={'password'} error={errConfirmPassword != ''} helperText={errConfirmPassword}
+                    onChange={handleChange('confirmpassword')}/>
+                
+
+
+                <ButtonMainTheme style={{width: 200}} textStyle={{fontSize: 24, fontWeight: 'bold'}} label={'Submit'} onClick={clickSubmit} />
+            </ContainerLoginRegister>
         </div>
-    );
+    )
 }
 
