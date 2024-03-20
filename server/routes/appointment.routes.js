@@ -9,8 +9,8 @@ router.route('/api/appointment').post(authCtrl.requireSignin, appointmentCtrl.cr
 router.route('/api/appointment').get(authCtrl.requireSignin, appointmentCtrl.list);
 
 router.route('/api/appointment/:appointmentid')
-    .get(authCtrl.requireSignin, appointmentCtrl.read)
-    //.put(authCtrl.requireSignin, authCtrl.hasAuthorization, appointmentCtrl.update)
+    .get(authCtrl.requireSignin, authCtrl.hasAuthorization, appointmentCtrl.read)
+    .put(authCtrl.requireSignin, authCtrl.hasAuthorization, appointmentCtrl.update)
     .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, appointmentCtrl.remove)
 
 //router.route('/api/appointment').post(appointmentCtrl.create);
