@@ -45,16 +45,32 @@ const appointmentByID = async (req, res, next, id) => {
         next()
     } catch (err) {
         return res.status('400').json({
-            error: "Could not retrieve user"
+            error: "Could not retrieve appointment"
         })
     }
 }
 const read = (req, res) => {
-    return res.json(req.profile)
+    //console.log("read");
+    return res.json(req.profile);
+}
+
+const update = async (req, res) => {
+    try {
+        let appointment = req.profile;
+        appointment = extend(appointment, req.body);
+        //appointment.updated = Date.now()
+        await appointment.save();
+        res.json(appointment);
+    } catch (err) {
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(err)
+        })
+    }
 }
 
 const remove = async (req, res) => {
     try {
+        console.log(remove);
         let appointment = req.profile
         let deletedAppointment = await appointment.deleteOne()
        
@@ -65,4 +81,4 @@ const remove = async (req, res) => {
         })
     }
 }
-export default { create, appointmentByID, read, list, remove, }
+export default { create, appointmentByID, read, list, remove, update }
