@@ -56,7 +56,6 @@ export default function Signup() {
         phone: '',
     });
     const handleChange = name => event => {
-        console.log("<------- name: ", name, ", value:", event.target.value, ", result: ", /^.*([0-9()+-])$/.test(event.target.value))
         if(name == 'phone'){
             if(/^.*([0-9()+-])$/.test(event.target.value)){
                 setValues({ ...values, [name]: event.target.value });
