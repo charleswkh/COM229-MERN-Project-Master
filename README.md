@@ -35,16 +35,16 @@ Users will be able to sign in to book an appointment.
 # Task List Assigned on Premiliary Project Planning
 
 MongoDB Schema
-  1. Users - vohra
-  2. Appintment - gavin
-  3. Dentists - vohra
+  1. Users - vohra 
+  3. Appintment - gavin
+  4. Dentists - vohra
 
-Wirframes:
-  1. Registions - Duc
-  2. Login - Duc
-  3. User Profile Management - Duc
-  4. Appoinment Confirmation Page - Duc
-  5. Appointment Schedule pag - Duc
+Wireframes:
+  1. Registions - Charles & Kenry
+  2. Login - Duc,Charles & Kenry
+  3. User Profile Management - Duc,Charles & Kenry
+  4. Appoinment Confirmation Page - Duc,Charles & Kenry
+  5. Appointment Schedule pag - Duc,Charles & Kenry
 
 API:
   login API - Charles
@@ -62,7 +62,9 @@ React APP Screens:
 
 
 External Design Document - DUC
-Power Point Slide - 
+
+Power Point Slide - Duc
+
 Video Domenstration of 5 minutes - DUC
 
 
