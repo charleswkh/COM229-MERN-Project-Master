@@ -8,6 +8,13 @@ Users will be able to sign in to book an appointment.
 
 # Member of Project
 
+Huu Duc, Ngo – 301221389
+Woo, Kit Hung – 301365408
+Vohra, Muhammad Shahzaib - 301375673
+Tse, Kang Chuen - 301399833
+Chiang, Kenry - 301284801
+
+
 
 # How to run the project in Dev Mode
   1. Clone the repo
