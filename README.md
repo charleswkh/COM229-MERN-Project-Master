@@ -8,11 +8,11 @@ Users will be able to sign in to book an appointment.
 
 # Member of Project
 
-Huu Duc, Ngo – 301221389
-Woo, Kit Hung – 301365408
-Vohra, Muhammad Shahzaib - 301375673
-Tse, Kang Chuen - 301399833
-Chiang, Kenry - 301284801
+  1. Huu Duc, Ngo – 301221389
+  2. Woo, Kit Hung – 301365408
+  3. Vohra, Muhammad Shahzaib - 301375673
+  4. Tse, Kang Chuen - 301399833
+  5. Chiang, Kenry - 301284801
 
 
 
@@ -20,6 +20,8 @@ Chiang, Kenry - 301284801
   1. Clone the repo
   2. in both root & client folder, type:
      ```
+     npm install
+     cd client
      npm install
      ```
   3. Start the program from client folder
