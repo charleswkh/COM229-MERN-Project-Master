@@ -1,21 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Typography, TextField, CardActions, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import CardMedia from '@material-ui/core/CardMedia';
 import { Link, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { create } from './api-appointment';
 import auth from '../lib/auth-helper.js'
 import DatePicker from "react-datepicker";
+import DateCalendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import '../src/appointment.css';
 import setHours from "date-fns/setHours";
-import "react-datepicker/dist/react-datepicker.css";
+
+import { TextFieldBlue } from '../component/customstyle/CustomStyledTextField.jsx'
+import ButtonMainTheme from '../component/button/ButtonMainTheme.jsx'
+import ToastMessageGeneral from '../component/modal/ToastMessageGeneral.jsx';
 
 const useStyles = makeStyles(theme => ({
     card: {
-        maxWidth: 400,
-        margin: '0 auto',
-        marginTop: theme.spacing(3),
-        padding: theme.spacing(2),
-        textAlign: 'center',
+        maxWidth: 600,
+        margin: 'auto',
+        marginTop: theme.spacing(5),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: 20
+    },
+    title: {
+        padding: theme.spacing(3, 2.5, 2),
+        color: theme.palette.openTitle,
+    },
+    media: {
+        width: 400,
+        height: 400
     },
     textField: {
         width: '100%',
@@ -27,11 +44,10 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: '0 auto',
         marginBottom: theme.spacing(2),
-    },
-    title: {
-        fontSize: 18,
-    },
+    }
 }));
+
+
 // const create = async (user) => {
 //  return { error: null }; // Simulated API call
 // };
@@ -94,8 +110,8 @@ export default function Create() {
             appointment_date: values.appointment_date || undefined,
             is_active: true,
         };
-        //console.log(appointment);
-        //console.log(values.appointment_date );
+        console.log(appointment);
+        console.log(values.appointment_date );
         create(
             appointment, 
             {
@@ -126,33 +142,15 @@ export default function Create() {
                     <Typography variant="h6" className={classes.title}>
                         Create Appointment
                     </Typography>
+                    <CardMedia className={classes.media} image={'./Booking.png'}/>
 
-                    <TextField
-                        id="apply_user"
-                        label="Name"
-                        className={classes.textField}
-                        value={values.apply_user}
-                        onChange={handleChange('apply_user')}
-                        margin="normal"
-                    />
-                   <DatePicker showTimeSelect
-                        id = "appointment_date"
-                        
-                        selected={startDate} 
-                        onChange={ (date) => {setStartDate(date), handleChangeDate("appointment_date", date)}}
-                        
-                        excludeTimes={[
-                                new Date(new Date().setHours(new Date().getHours(), new Date().getMinutes()))
-                            ]}
-                        dateFormat="MMMM d, yyyy HH:mm"
-                    />
+                    <DateCalendar value={startDate} onChange={(newValue) => handleChangeDate("appointment_date", newValue)} />
+                    
                     
                 </CardContent>
                 <CardActions>
-                    <Button color="primary" variant="contained" onClick={clickSubmit}
-                        className={classes.submit}>
-                        Submit
-                    </Button>
+                    
+                    <ButtonMainTheme style={{width: 200}} textStyle={{fontSize: 24, fontWeight: 'bold'}} label={'Submit'} onClick={clickSubmit} />
                 </CardActions>
             </Card>
             <Dialog open={open} onClose={handleClose}>
