@@ -31,8 +31,8 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.openTitle,
     },
     media: {
-        width: 380,
-        height: 350,
+        width: 250,
+        height: 250,
         resize: 'auto'
     },
     
@@ -157,7 +157,7 @@ export default function Create() {
     return (
         <div>
             <Card className={classes.card}>
-                <CardContent>
+                <CardContent style={{display: 'contents'}}>
                     <Typography variant="h6" className={classes.title}>
                         Create Appointment
                     </Typography>
