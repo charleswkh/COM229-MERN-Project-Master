@@ -33,6 +33,14 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: 'Password is required'
     },
+    // user_type: {
+    //     type: String,
+    //     // required: "user type is required"
+    // },
+    // MyAppointments:[{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Appointment"
+    // }],
     salt: String
 });
 UserSchema.virtual('password')

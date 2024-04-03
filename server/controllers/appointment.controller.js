@@ -3,7 +3,9 @@ import extend from 'lodash/extend.js';
 import errorHandler from './error.controller.js';
 
 const create = async (req, res) => {
+   // req.body.doctor = Object('6606d8348947b96e6ab4063e');
     const appointment = new Appointment(req.body);
+   
     try {
         //console.log(req.body);
         await appointment.save();

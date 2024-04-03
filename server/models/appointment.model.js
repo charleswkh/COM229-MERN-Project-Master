@@ -20,6 +20,11 @@ const AppointmentSchema = new mongoose.Schema({
         type: Boolean,
         default : true
     }
+    //,
+    // doctor:{
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:'User'
+    // }
 });
 
 
